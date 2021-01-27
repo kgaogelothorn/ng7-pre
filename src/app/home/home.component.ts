@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { DataService } from '../data.service'
+import { Data, User } from './interfaces';
 
 @Component({
   selector: 'app-home',
@@ -6,14 +8,18 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
-  h1Style = false;
+  users: Data[];
 
-  constructor() { }
+  constructor( readonly data:DataService) { }
 
-  ngOnInit(): void {
+  ngOnInit() {
+    this.data.getUsers().subscribe((data: User) => {
+        this.users = data.data
+        console.log(data)
+      }, err => {
+        alert(JSON.stringify(err))
+      }
+    );
   }
-  firstClick() {
-    this.h1Style = true;
-   }
 
 }
